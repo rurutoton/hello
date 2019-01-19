@@ -65,8 +65,8 @@ $message  = "コース:" . $_SESSION['course'] . "\r\n"
             . "人数:" . $_SESSION['ninzu'] . "\r\n"
             . "ご要望:" . $_SESSION['yobo'] . "\r\n";
 //送り主のドメインはサーバーと一致させる(迷惑メール対策)
-$headers  = 'From: totoron@xdomain.jp' . "\r\n";
-$headers .= 'Cc: syu.katu.2478.perc@gmail.com' . "\r\n";
+$headers  = 'From: **********@xdomain.jp' . "\r\n";
+$headers .= 'Cc: ********************@gmail.com' . "\r\n";
 
 mb_send_mail($to, $subject, $message, $headers);
 
