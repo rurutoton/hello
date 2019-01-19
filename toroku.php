@@ -52,8 +52,28 @@ $sql="INSERT INTO yyk(course, yoyakuji, ninzu, yobo,kid) VALUES (?,?,?,?,?) ";
     
     $dbh->commit(); //コミットで全て実行
 //送信成功したらありがとうの画面で終わる
+
 //メール送信(予約者、管理者)
-echo "ご予約ありがとうございました";
+mb_language("Japanese");
+mb_internal_encoding("UTF-8");
+ 
+$to       = $_SESSION['email'];
+//$to      .= ', ' .'kamotora2@xxx.xxx.xxx';
+$subject  = $_SESSION['name'].'様 ご予約ありがとうございます';
+$message  = "コース:" . $_SESSION['course'] . "\r\n"
+            . "ご予約日時:" . $_SESSION['yoyakuji'] . "\r\n"
+            . "人数:" . $_SESSION['ninzu'] . "\r\n"
+            . "ご要望:" . $_SESSION['yobo'] . "\r\n";
+//送り主のドメインはサーバーと一致させる(迷惑メール対策)
+$headers  = 'From: totoron@xdomain.jp' . "\r\n";
+$headers .= 'Cc: syu.katu.2478.perc@gmail.com' . "\r\n";
+
+mb_send_mail($to, $subject, $message, $headers);
+
+echo "ご予約ありがとうございました .\r\n
+        只今自動返信メールを送りました.\r\n
+        DOCOMOの場合は受信許可設定をして下さい.";
+    
 
 } catch (Exception $e) {
     $dbh->rollBack();   //ロールバック 全てなかったことになる
@@ -64,23 +84,3 @@ echo "ご予約ありがとうございました";
 $_SESSION = array();     //セッションを空にする
 session_destroy();      //セッションを完全に破壊する
    
-/*書けるところまで書いてみよう
-1 SQL文 cstにインサート
-    プリペアドステートメント
-    バインド機構
-        エクスキュート
-            最後のオートインクリメントを取得(ググる)
-2 SQL文 yykにインサート
-    以下は同じ
-*/
-
-/*ロジック
-    1 cst , yyk どっちに先にいれるべき?  →  cstが先
-    2 自動連番で生成したkidを取得してyykに入れる方法
-        → 次のA_Iの番号を取得する関数をいう
-    3 cst に入って yykに入らない事態を避ける方法(トランザクション機能)
-        トランザクション→コミット→ロールバック
-*/
-// 	→ メール送信 (予約者, 管理者)
-//   → "ありがとう"の画面で終わる
-//   → セッション削除
