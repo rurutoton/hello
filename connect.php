@@ -4,7 +4,7 @@
 $host = 'localhost';
 $dbname = 'yoyaku';     //DB名だけ変更
 $user = 'pikarumina';
-$pswd = 'pochi456web'; //接続情報は変数にいれましょう
+$pswd = '***************'; //接続情報は変数にいれましょう
 
 try{  //つながったら有効にする
 $dsn="mysql:dbname=$dbname;host=$host;charset=utf8";
